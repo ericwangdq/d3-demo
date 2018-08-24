@@ -1,0 +1,91 @@
+<html>
+
+<head>
+  <title>Learn D3.js</title>
+  <style>
+    .line-chart {
+      min-width: 600px;
+      min-height: 400px;
+      margin: 20px;
+    }
+
+    .axis-y path {
+      display: none;
+    }
+
+    .axis-x .tick:first-child line,
+    .axis-x .tick:last-child line {
+      display: none;
+    }
+
+    .axis-x .tick text,
+    .axis-y .tick text {
+      font-size: 13px;
+    }
+
+    .overlay {
+      fill: none;
+      pointer-events: all;
+      cursor: pointer;
+    }
+
+    .dot {
+      cursor: pointer;
+    }
+
+    .dot circle {
+      fill: rgba(24, 144, 255, .85);
+      stroke: rgba(24, 144, 255, .85);
+      box-shadow: rgb(174, 174, 174) 0px 0px 10px;
+      opacity: 0;
+    }
+
+    .tooltip {
+      position: absolute;
+      width: 100px;
+      height: 40px;
+      padding: 2px;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
+      transition: opacity .2s cubic-bezier(0.23, 1, 0.32, 1) 0s, left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s, top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: rgb(174, 174, 174) 0px 0px 10px;
+      border-radius: 3px;
+      color: rgb(87, 87, 87);
+      font-size: 13px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimSun, sans-serif;
+      line-height: 20px;
+      padding: 10px 10px 6px;
+      opacity: 0;
+    }
+
+    .date-txt {
+      display: block;
+    }
+
+    .val-txt {
+      display: block;
+      color: rgba(24, 144, 255, .85);
+      font-weight: bold;
+    }
+
+    .val-txt::before {
+      content: 'Price';
+      color: rgb(87, 87, 87);
+      margin-right: 10px;
+      font-weight: normal;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <h1>First heading</h1>
+  d3.select('h1').style('color', 'red');-->
+
+  <svg class="line-chart"></svg>
+  <script src="//d3js.org/d3.v4.min.js"></script>
+  <script src="line-chart.js"></script>
+</body>
+
+</html>
