@@ -10,7 +10,7 @@ const appServerPort = 1501;
 // websocket and http servers
 const webSocketServer = require("websocket").server;
 const http = require("http");
-const https = require("https");
+const axios = require("axios");
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -133,25 +133,16 @@ app.all(/\/api\/.*?/i, (req, res, next) => {
   if (req.method === "OPTIONS") {
     res.status(200).end();
   } else {
-    https
+    axios
       .get(
-        "https://api.coindesk.com/v1/bpi/historical/close.json?start=2017-12-31&end=2018-04-01",
-        apiResp => {
-          let data = "";
-
-          // A chunk of data has been recieved.
-          apiResp.on("data", chunk => {
-            data += chunk;
-          });
-
-          // The whole response has been received. Print out the result.
-          apiResp.on("end", () => {
-            res.json(JSON.parse(data)).end();
-          });
-        }
+        "https://api.coindesk.com/v1/bpi/historical/close.json?start=2017-12-31&end=2018-04-01"
       )
-      .on("error", err => {
-        apiResp
+      .then(response => {
+        console.log(response.data);
+        res.json(response.data).end();
+      })
+      .catch(err => {
+        res
           .status(500)
           .json({ err: "Call api error" + err.toString(), code: 500 })
           .end();
@@ -184,31 +175,22 @@ const timer = setInterval(() => {
   endMonth++;
   const api = `https://api.coindesk.com/v1/bpi/historical/close.json?start=2017-12-31&end=2018-0${endMonth}-01`;
   console.log(`${new Date()} call api`, api);
-  https
-    .get(api, apiResp => {
-      let data = "";
+  axios
+    .get(api)
+    .then(response => {
+      console.log(
+        `${new Date()} fetch new data and broadcast message to clients.`
+      );
+      msgData.response = response.data;
 
-      // A chunk of data has been recieved.
-      apiResp.on("data", chunk => {
-        data += chunk;
-      });
-
-      // The whole response has been received. Print out the result.
-      apiResp.on("end", () => {
-        console.log(
-          `${new Date()} fetch new data and broadcast message to clients.`
-        );
-        msgData.response = data;
-
-        // broadcast message to all connected clients
-        clients.forEach(client => {
-          msgData.connection = client.remoteAddress;
-          const msg = JSON.stringify({ type: "message", data: msgData });
-          client.sendUTF(msg);
-        });
+      // broadcast message to all connected clients
+      clients.forEach(client => {
+        msgData.connection = client.remoteAddress;
+        const msg = JSON.stringify({ type: "message", data: msgData });
+        client.sendUTF(msg);
       });
     })
-    .on("error", err => {
+    .catch(err => {
       console.log(`${new Date()} Call api error: ${err.toString()}.`);
     });
 }, 30 * 1000);

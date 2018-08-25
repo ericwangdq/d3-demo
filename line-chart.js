@@ -54,7 +54,7 @@ connection.addEventListener("message", msg => {
 
   console.log(msgData);
   if (msgData.data && msgData.data.response) {
-    const parsedData = parseData(JSON.parse(msgData.data.response));
+    const parsedData = parseData(msgData.data.response);
     d3.select("svg.line-chart")
       .selectAll("*")
       .remove();
