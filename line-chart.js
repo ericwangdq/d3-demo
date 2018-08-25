@@ -88,8 +88,10 @@ function parseData(data) {
 }
 
 function drawChart(data) {
-  const svgWidth = window.innerWidth - 60;
-  const svgHeight = parseInt(window.innerHeight / 2);
+  const svgWidth = window.innerWidth - 60 < 600 ? 600 : window.innerWidth - 60;
+  const svgHeight = parseInt(window.innerHeight / 2)
+    ? 400
+    : parseInt(window.innerHeight / 2);
   const margin = { top: 20, right: 20, bottom: 80, left: 50 };
   const width = svgWidth - margin.left - margin.right;
   const height = svgHeight - margin.top - margin.bottom;

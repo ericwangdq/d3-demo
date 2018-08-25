@@ -138,7 +138,7 @@ app.all(/\/api\/.*?/i, (req, res, next) => {
         "https://api.coindesk.com/v1/bpi/historical/close.json?start=2017-12-31&end=2018-04-01"
       )
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         res.json(response.data).end();
       })
       .catch(err => {
